@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import math
 
 with open('./input.txt') as input:
     lines = input.readlines()
@@ -19,9 +19,9 @@ for r in raws:
 
 
 summe = 0
+two = 0
 for ids in ranges:
     first, last = ids
-    print(f'checking from {first} to {last}')
     while first <= last:
         length = len(str(first))
         if length % 2 == 0:
@@ -29,9 +29,22 @@ for ids in ranges:
             last_digits = first % exponent
             first_digits = (first - last_digits) / exponent
             if last_digits == first_digits:
-                print('found one:', first)
                 summe = summe + first
+
+        max_length = math.floor(length / 2)
+        pattern_length = 1
+        while pattern_length <= max_length:
+            string = str(first)
+            elements = []
+            while len(string) >= pattern_length:
+                elements.append(string[0:pattern_length])
+                string = string[pattern_length:]
+            if len(string) == 0 and len(set(elements)) == 1:
+                two = two + first
+                break
+            pattern_length = pattern_length + 1
         first = first + 1
 
-print(ranges)
-print(summe)
+
+print('part one:', summe)
+print('part two:', two)
