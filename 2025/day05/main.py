@@ -22,11 +22,30 @@ for ing in ingredients:
             fresh = fresh + 1
             break
 
-print(fresh)
+print('part one:', fresh)
 
+
+sorting = sorted(ranges, key=lambda r: r[0])
+cleaning = True
+
+while cleaning:
+    cleaning = False
+    for i, ran in enumerate(sorting):
+        if i == 0:
+            continue
+        previous = sorting[i-1]
+        if previous[1] >= ran[1]:
+            sorting[i] = previous
+            cleaning = True
+        elif previous[1] >= ran[0]:
+            new_one = (previous[0], ran[1])
+            sorting[i-1] = new_one
+            sorting[i] = new_one
+            cleaning = True
+    sorting = sorted(list(set(sorting)), key=lambda r: r[0])
 
 total = 0
-for start, end in ranges:
-    total = end - start + 1
+for element in sorting:
+    total = total + element[1] - element[0] + 1
 
-print(total)
+print('part two:', total)
